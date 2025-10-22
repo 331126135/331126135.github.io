@@ -1,207 +1,187 @@
-// 导航栏主题和语言切换功能
+// 主题切换和语言切换功能 - 支持下拉菜单
 (function() {
     'use strict';
     
-    // 等待DOM加载完成
+    // 等待DOM加载完成和Butterfly主题初始化
     document.addEventListener('DOMContentLoaded', function() {
-        initNavSwitches();
+        // 等待Butterfly主题完全加载
+        const initWhenReady = () => {
+            if (window.btf || document.querySelector('.menus_item_child')) {
+                initNavSwitches();
+            } else {
+                setTimeout(initWhenReady, 100);
+            }
+        };
+        initWhenReady();
     });
     
     function initNavSwitches() {
-        // 查找导航栏中的切换按钮
-        const navItems = document.querySelectorAll('#nav .nav-item');
+        // 初始化主题切换下拉菜单
+        initThemeDropdown();
         
-        navItems.forEach(function(item) {
-            const link = item.querySelector('a');
-            if (link && link.getAttribute('href') === 'javascript:void(0)') {
-                const text = link.textContent.trim();
-                
-                if (text === '主题切换') {
-                    setupThemeSwitch(item, link);
-                } else if (text === '语言切换') {
-                    setupLanguageSwitch(item, link);
+        // 初始化语言切换下拉菜单
+        initLanguageDropdown();
+        
+        // 恢复保存的设置
+        restoreSettings();
+    }
+    
+    // 初始化主题切换下拉菜单
+    function initThemeDropdown() {
+        const themeItems = document.querySelectorAll('.menus_item_child li a[href*="javascript:void(0)"]');
+        
+        themeItems.forEach(item => {
+            const text = item.textContent.trim();
+            
+            if (text.includes('浅色模式')) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setTheme('light');
+                    showNotification('已切换到浅色模式');
+                });
+            } else if (text.includes('深色模式')) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setTheme('dark');
+                    showNotification('已切换到深色模式');
+                });
+            } else if (text.includes('跟随系统')) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setTheme('auto');
+                    showNotification('已设置为跟随系统主题');
+                });
+            }
+        });
+    }
+    
+    // 初始化语言切换下拉菜单
+    function initLanguageDropdown() {
+        const languageItems = document.querySelectorAll('.menus_item_child li a[href*="javascript:void(0)"]');
+        
+        languageItems.forEach(item => {
+            const text = item.textContent.trim();
+            
+            if (text.includes('中文')) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setLanguage('zh-CN');
+                    showNotification('已切换到中文');
+                });
+            } else if (text.includes('英文')) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setLanguage('en');
+                    showNotification('已切换到英文');
+                });
+            } else if (text.includes('日文')) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setLanguage('ja');
+                    showNotification('已切换到日文');
+                });
+            }
+        });
+    }
+    
+    // 设置主题
+    function setTheme(theme) {
+        const html = document.documentElement;
+        
+        if (theme === 'auto') {
+            // 跟随系统主题
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                activateDarkMode();
+            } else {
+                activateLightMode();
+            }
+            // 保存为auto模式
+            if (window.btf && window.btf.saveToLocal) {
+                window.btf.saveToLocal.set('theme', 'auto', 2);
+            } else {
+                localStorage.setItem('theme', 'auto');
+            }
+        } else if (theme === 'dark') {
+            activateDarkMode();
+        } else if (theme === 'light') {
+            activateLightMode();
+        }
+        
+        // 更新主题切换按钮的图标
+        updateThemeIcon(theme);
+        
+        // 触发自定义事件
+        window.dispatchEvent(new CustomEvent('themeChanged', {
+            detail: { theme: theme }
+        }));
+    }
+    
+    // 激活深色模式
+    function activateDarkMode() {
+        if (window.btf && window.btf.activateDarkMode) {
+            // 使用Butterfly的内置函数
+            window.btf.activateDarkMode();
+        } else {
+            // 备用方案
+            document.documentElement.setAttribute('data-theme', 'dark');
+        }
+        
+        // 保存设置
+        if (window.btf && window.btf.saveToLocal) {
+            window.btf.saveToLocal.set('theme', 'dark', 2);
+        } else {
+            localStorage.setItem('theme', 'dark');
+        }
+    }
+    
+    // 激活浅色模式
+    function activateLightMode() {
+        if (window.btf && window.btf.activateLightMode) {
+            // 使用Butterfly的内置函数
+            window.btf.activateLightMode();
+        } else {
+            // 备用方案
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+        
+        // 保存设置
+        if (window.btf && window.btf.saveToLocal) {
+            window.btf.saveToLocal.set('theme', 'light', 2);
+        } else {
+            localStorage.setItem('theme', 'light');
+        }
+    }
+    
+    // 更新主题图标
+    function updateThemeIcon(theme) {
+        const themeButton = document.querySelector('.menus_item .fa-moon, .menus_item .fa-sun, .menus_item .fa-desktop');
+        if (themeButton) {
+            const icon = themeButton.querySelector('i');
+            if (icon) {
+                if (theme === 'dark') {
+                    icon.className = 'fas fa-moon fa-fw';
+                } else if (theme === 'light') {
+                    icon.className = 'fas fa-sun fa-fw';
+                } else {
+                    icon.className = 'fas fa-desktop fa-fw';
                 }
             }
-        });
-    }
-    
-    // 设置主题切换功能
-    function setupThemeSwitch(item, link) {
-        // 检查是否已有主题切换功能
-        if (typeof window.switchDarkMode === 'function') {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.switchDarkMode();
-                updateThemeIcon(item, link);
-            });
-        } else {
-            // 如果没有内置功能，创建自定义主题切换
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                toggleCustomTheme();
-                updateThemeIcon(item, link);
-            });
-        }
-        
-        // 初始化图标
-        updateThemeIcon(item, link);
-    }
-    
-    // 设置语言切换功能
-    function setupLanguageSwitch(item, link) {
-        // 创建下拉菜单
-        createLanguageDropdown(item, link);
-        
-        // 点击切换下拉菜单显示/隐藏
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            toggleLanguageDropdown(item);
-        });
-        
-        // 点击其他地方关闭下拉菜单
-        document.addEventListener('click', function(e) {
-            if (!item.contains(e.target)) {
-                hideLanguageDropdown(item);
-            }
-        });
-        
-        // 初始化图标
-        updateLanguageIcon(item, link);
-    }
-    
-    // 更新主题切换图标
-    function updateThemeIcon(item, link) {
-        const icon = link.querySelector('i');
-        if (icon) {
-            const isDark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-                          document.body.classList.contains('dark') ||
-                          document.documentElement.classList.contains('dark');
-            
-            if (isDark) {
-                icon.className = 'fas fa-sun';
-                link.title = '切换到浅色模式';
-            } else {
-                icon.className = 'fas fa-moon';
-                link.title = '切换到深色模式';
-            }
         }
     }
     
-    // 创建语言下拉菜单
-    function createLanguageDropdown(item, link) {
-        // 检查是否已经存在下拉菜单
-        if (item.querySelector('.language-dropdown')) {
-            return;
-        }
-        
-        const dropdown = document.createElement('div');
-        dropdown.className = 'language-dropdown';
-        
-        const languages = [
-            { code: 'zh-CN', name: '简体中文', icon: 'fas fa-flag' },
-            { code: 'zh-TW', name: '繁體中文', icon: 'fas fa-flag' },
-            { code: 'en', name: 'English', icon: 'fas fa-flag' },
-            { code: 'ja', name: '日本語', icon: 'fas fa-flag' },
-            { code: 'ko', name: '한국어', icon: 'fas fa-flag' }
-        ];
-        
-        languages.forEach(function(lang) {
-            const item = document.createElement('a');
-            item.href = 'javascript:void(0)';
-            item.className = 'language-dropdown-item';
-            item.setAttribute('data-lang', lang.code);
-            item.innerHTML = '<i class="' + lang.icon + '"></i>' + lang.name;
-            
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                switchLanguage(lang.code);
-                hideLanguageDropdown(item.parentElement.parentElement);
-            });
-            
-            dropdown.appendChild(item);
-        });
-        
-        item.appendChild(dropdown);
-    }
-    
-    // 切换语言下拉菜单显示/隐藏
-    function toggleLanguageDropdown(item) {
-        const dropdown = item.querySelector('.language-dropdown');
-        if (dropdown) {
-            if (dropdown.classList.contains('show')) {
-                hideLanguageDropdown(item);
-            } else {
-                showLanguageDropdown(item);
-            }
-        }
-    }
-    
-    // 显示语言下拉菜单
-    function showLanguageDropdown(item) {
-        const dropdown = item.querySelector('.language-dropdown');
-        if (dropdown) {
-            // 隐藏其他下拉菜单
-            hideAllLanguageDropdowns();
-            
-            // 显示当前下拉菜单
-            dropdown.classList.add('show');
-            
-            // 更新当前语言状态
-            updateLanguageDropdownState(dropdown);
-        }
-    }
-    
-    // 隐藏语言下拉菜单
-    function hideLanguageDropdown(item) {
-        const dropdown = item.querySelector('.language-dropdown');
-        if (dropdown) {
-            dropdown.classList.remove('show');
-        }
-    }
-    
-    // 隐藏所有语言下拉菜单
-    function hideAllLanguageDropdowns() {
-        const dropdowns = document.querySelectorAll('.language-dropdown');
-        dropdowns.forEach(function(dropdown) {
-            dropdown.classList.remove('show');
-        });
-    }
-    
-    // 更新语言下拉菜单状态
-    function updateLanguageDropdownState(dropdown) {
-        const currentLang = document.documentElement.getAttribute('lang') || 'zh-CN';
-        const items = dropdown.querySelectorAll('.language-dropdown-item');
-        
-        items.forEach(function(item) {
-            item.classList.remove('active');
-            if (item.getAttribute('data-lang') === currentLang) {
-                item.classList.add('active');
-            }
-        });
-    }
-    
-    // 切换语言
-    function switchLanguage(langCode) {
+    // 设置语言
+    function setLanguage(lang) {
         const html = document.documentElement;
-        const currentLang = html.getAttribute('lang') || 'zh-CN';
+        html.setAttribute('lang', lang);
+        localStorage.setItem('language', lang);
         
-        if (currentLang === langCode) {
-            return; // 已经是当前语言，不需要切换
-        }
-        
-        // 更新语言属性
-        html.setAttribute('lang', langCode);
-        localStorage.setItem('language', langCode);
+        // 更新语言切换按钮的图标
+        updateLanguageIcon(lang);
         
         // 根据语言进行相应的处理
-        switch (langCode) {
+        switch (lang) {
             case 'zh-CN':
                 translateToSimplified();
-                break;
-            case 'zh-TW':
-                translateToTraditional();
                 break;
             case 'en':
                 translateToEnglish();
@@ -209,87 +189,74 @@
             case 'ja':
                 translateToJapanese();
                 break;
-            case 'ko':
-                translateToKorean();
-                break;
         }
         
         // 触发自定义事件
         window.dispatchEvent(new CustomEvent('languageChanged', {
-            detail: { language: langCode }
+            detail: { language: lang }
         }));
     }
     
-    // 更新语言切换图标
-    function updateLanguageIcon(item, link) {
-        const icon = link.querySelector('i');
-        if (icon) {
-            const currentLang = document.documentElement.getAttribute('lang') || 'zh-CN';
-            icon.className = 'fas fa-language';
-            link.title = '选择语言';
-        }
-    }
-    
-    // 自定义主题切换功能
-    function toggleCustomTheme() {
-        const html = document.documentElement;
-        const body = document.body;
-        
-        const isDark = html.getAttribute('data-theme') === 'dark' ||
-                      body.classList.contains('dark') ||
-                      html.classList.contains('dark');
-        
-        if (isDark) {
-            // 切换到浅色模式
-            html.setAttribute('data-theme', 'light');
-            html.classList.remove('dark');
-            body.classList.remove('dark');
-            localStorage.setItem('theme', 'light');
-        } else {
-            // 切换到深色模式
-            html.setAttribute('data-theme', 'dark');
-            html.classList.add('dark');
-            body.classList.add('dark');
-            localStorage.setItem('theme', 'dark');
-        }
-        
-        // 触发自定义事件
-        window.dispatchEvent(new CustomEvent('themeChanged', {
-            detail: { theme: isDark ? 'light' : 'dark' }
-        }));
-    }
-    
-    // 自定义语言切换功能
-    function toggleCustomLanguage() {
-        const html = document.documentElement;
-        const currentLang = html.getAttribute('lang') || 'zh-CN';
-        
-        if (currentLang === 'zh-CN') {
-            // 切换到繁体中文
-            html.setAttribute('lang', 'zh-TW');
-            localStorage.setItem('language', 'zh-TW');
-            translateToTraditional();
-        } else {
-            // 切换到简体中文
-            html.setAttribute('lang', 'zh-CN');
-            localStorage.setItem('language', 'zh-CN');
-            translateToSimplified();
-        }
-        
-        // 触发自定义事件
-        window.dispatchEvent(new CustomEvent('languageChanged', {
-            detail: { language: currentLang === 'zh-CN' ? 'zh-TW' : 'zh-CN' }
-        }));
-    }
-    
-    // 简化的繁体中文转换
-    function translateToTraditional() {
-        const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, li, td, th');
-        elements.forEach(function(element) {
-            if (element.children.length === 0) {
-                element.textContent = simplifiedToTraditional(element.textContent);
+    // 更新语言图标
+    function updateLanguageIcon(lang) {
+        const languageButton = document.querySelector('.menus_item .fa-language, .menus_item .fa-flag, .menus_item .fa-globe, .menus_item .fa-globe-asia');
+        if (languageButton) {
+            const icon = languageButton.querySelector('i');
+            if (icon) {
+                if (lang === 'zh-CN') {
+                    icon.className = 'fas fa-flag fa-fw';
+                } else if (lang === 'en') {
+                    icon.className = 'fas fa-globe fa-fw';
+                } else if (lang === 'ja') {
+                    icon.className = 'fas fa-globe-asia fa-fw';
+                }
             }
-        });
+        }
+    }
+    
+    // 显示通知
+    function showNotification(message) {
+        // 创建通知元素
+        const notification = document.createElement('div');
+        notification.className = 'theme-notification';
+        notification.textContent = message;
+        
+        // 添加样式
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(73, 177, 245, 0.9);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s ease;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // 显示动画
+        setTimeout(() => {
+            notification.style.opacity = '1';
+            notification.style.transform = 'translateX(0)';
+        }, 100);
+        
+        // 自动隐藏
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => {
+                if (document.body.contains(notification)) {
+                    document.body.removeChild(notification);
+                }
+            }, 300);
+        }, 3000);
     }
     
     // 简化的简体中文转换
@@ -318,16 +285,6 @@
         elements.forEach(function(element) {
             if (element.children.length === 0) {
                 element.textContent = chineseToJapanese(element.textContent);
-            }
-        });
-    }
-    
-    // 翻译为韩文（简化版）
-    function translateToKorean() {
-        const elements = document.querySelectorAll('h1, h2, h3, h4, h5, h6, p, span, a, li, td, th');
-        elements.forEach(function(element) {
-            if (element.children.length === 0) {
-                element.textContent = chineseToKorean(element.textContent);
             }
         });
     }
@@ -499,70 +456,6 @@
         '关于': 'について'
     };
     
-    // 中文到韩文的翻译字典（简化版）
-    const chineseToKoreanMap = {
-        '技术博客': '기술 블로그',
-        '技术': '기술',
-        '博客': '블로그',
-        '前端': '프론트엔드',
-        '后端': '백엔드',
-        '数据库': '데이터베이스',
-        '开发': '개발',
-        '工具': '도구',
-        '测试': '테스트',
-        '系统': '시스템',
-        '管理': '관리',
-        '配置': '설정',
-        '优化': '최적화',
-        '性能': '성능',
-        '缓存': '캐시',
-        '服务器': '서버',
-        '应用': '애플리케이션',
-        '程序': '프로그램',
-        '代码': '코드',
-        '文件': '파일',
-        '目录': '디렉토리',
-        '标签': '태그',
-        '分类': '카테고리',
-        '归档': '아카이브',
-        '文章': '글',
-        '页面': '페이지',
-        '内容': '내용',
-        '标题': '제목',
-        '链接': '링크',
-        '按钮': '버튼',
-        '菜单': '메뉴',
-        '导航': '네비게이션',
-        '搜索': '검색',
-        '评论': '댓글',
-        '用户': '사용자',
-        '登录': '로그인',
-        '注册': '등록',
-        '设置': '설정',
-        '主题': '테마',
-        '语言': '언어',
-        '切换': '전환',
-        '模式': '모드',
-        '深色': '다크',
-        '浅色': '라이트',
-        '简体': '간체',
-        '繁体': '번체',
-        '中文': '중국어',
-        '英文': '영어',
-        '日文': '일본어',
-        '韩文': '한국어',
-        '首页': '홈',
-        '关于': '소개'
-    };
-    
-    function simplifiedToTraditional(text) {
-        let result = text;
-        for (const [simplified, traditional] of Object.entries(simplifiedToTraditionalMap)) {
-            result = result.replace(new RegExp(simplified, 'g'), traditional);
-        }
-        return result;
-    }
-    
     function traditionalToSimplified(text) {
         let result = text;
         for (const [traditional, simplified] of Object.entries(traditionalToSimplifiedMap)) {
@@ -587,33 +480,26 @@
         return result;
     }
     
-    function chineseToKorean(text) {
-        let result = text;
-        for (const [chinese, korean] of Object.entries(chineseToKoreanMap)) {
-            result = result.replace(new RegExp(chinese, 'g'), korean);
-        }
-        return result;
-    }
-    
     // 页面加载时恢复保存的主题和语言设置
     function restoreSettings() {
-        const savedTheme = localStorage.getItem('theme');
+        let savedTheme;
+        
+        // 优先使用Butterfly的保存机制
+        if (window.btf && window.btf.saveToLocal) {
+            savedTheme = window.btf.saveToLocal.get('theme');
+        } else {
+            savedTheme = localStorage.getItem('theme');
+        }
+        
         const savedLanguage = localStorage.getItem('language');
         
         if (savedTheme) {
-            document.documentElement.setAttribute('data-theme', savedTheme);
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-                document.body.classList.add('dark');
-            }
+            setTheme(savedTheme);
         }
         
         if (savedLanguage) {
-            document.documentElement.setAttribute('lang', savedLanguage);
+            setLanguage(savedLanguage);
         }
     }
-    
-    // 初始化设置
-    restoreSettings();
     
 })();

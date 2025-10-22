@@ -1,0 +1,339 @@
+---
+globs: *.json,package.json,pnpm-lock.yaml
+description: 项目依赖管理和配置文件规范
+---
+
+# 项目依赖管理和配置文件规范
+
+## 包管理规范
+
+### 使用pnpm作为包管理器
+项目使用pnpm进行依赖管理，优势：
+- 更快的安装速度
+- 节省磁盘空间
+- 严格的依赖管理
+- 更好的monorepo支持
+
+### package.json配置规范
+
+#### 基本信息
+```json
+{
+  "name": "hexo-site",
+  "version": "0.0.0",
+  "private": true,
+  "description": "个人技术博客",
+  "author": "开发者",
+  "license": "MIT",
+  "homepage": "https://your-blog.com"
+}
+```
+
+#### 脚本命令
+```json
+{
+  "scripts": {
+    "build": "hexo generate",
+    "clean": "hexo clean",
+    "deploy": "hexo deploy",
+    "server": "hexo server",
+    "dev": "hexo server --debug",
+    "lint": "eslint source/js/",
+    "format": "prettier --write source/"
+  }
+}
+```
+
+#### 依赖分类
+```json
+{
+  "dependencies": {
+    "hexo": "^7.0.0",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-index": "^3.0.0",
+    "hexo-generator-tag": "^2.0.0",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^6.0.0",
+    "hexo-renderer-pug": "^3.0.0",
+    "hexo-renderer-stylus": "^3.0.1",
+    "hexo-server": "^3.0.0",
+    "moment-timezone": "^0.6.0"
+  },
+  "devDependencies": {
+    "hexo-util": "^3.3.0",
+    "eslint": "^8.0.0",
+    "prettier": "^3.0.0"
+  }
+}
+```
+
+## Hexo插件管理
+
+### 核心插件
+必须安装的Hexo核心插件：
+- `hexo-generator-index`: 首页生成器
+- `hexo-generator-archive`: 归档页面生成器
+- `hexo-generator-category`: 分类页面生成器
+- `hexo-generator-tag`: 标签页面生成器
+- `hexo-renderer-marked`: Markdown渲染器
+- `hexo-renderer-pug`: Pug模板渲染器
+- `hexo-renderer-stylus`: Stylus样式渲染器
+
+### 推荐插件
+```bash
+# 搜索功能
+pnpm add hexo-generator-search
+
+# 字数统计
+pnpm add hexo-wordcount
+
+# RSS订阅
+pnpm add hexo-generator-feed
+
+# 站点地图
+pnpm add hexo-generator-sitemap
+
+# 图片处理
+pnpm add hexo-asset-image
+
+# 代码高亮
+pnpm add hexo-prism-plugin
+
+# 数学公式
+pnpm add hexo-math
+```
+
+### 插件配置示例
+```yaml
+# _config.yml中的插件配置
+# 搜索配置
+search:
+  path: search.xml
+  field: post
+  content: true
+  format: html
+
+# RSS配置
+feed:
+  type: atom
+  path: atom.xml
+  limit: 20
+  hub:
+  content: true
+  content_limit: 140
+  content_limit_delim: ' '
+
+# 站点地图配置
+sitemap:
+  path: sitemap.xml
+  template: ./sitemap_template.xml
+  rel: false
+  tags: true
+  categories: true
+```
+
+## 版本管理策略
+
+### 语义化版本
+遵循Semantic Versioning规范：
+- **主版本号**：不兼容的API修改
+- **次版本号**：向下兼容的功能性新增
+- **修订号**：向下兼容的问题修正
+
+### 依赖版本策略
+```json
+{
+  "dependencies": {
+    // 使用^允许次版本和修订版本更新
+    "hexo": "^7.0.0",
+    // 使用~只允许修订版本更新
+    "moment-timezone": "~0.6.0",
+    // 使用精确版本，不自动更新
+    "hexo-server": "3.0.0"
+  }
+}
+```
+
+### 锁定文件管理
+- **pnpm-lock.yaml**: 自动生成，不要手动修改
+- 提交到版本控制系统
+- 确保团队成员使用相同版本
+
+## 环境配置
+
+### 开发环境
+```bash
+# 安装依赖
+pnpm install
+
+# 启动开发服务器
+pnpm run dev
+
+# 清理缓存
+pnpm run clean
+
+# 生成静态文件
+pnpm run build
+```
+
+### 生产环境
+```bash
+# 安装生产依赖
+pnpm install --production
+
+# 生成静态文件
+pnpm run build
+
+# 部署到服务器
+pnpm run deploy
+```
+
+## 配置文件管理
+
+### 主配置文件
+[_config.yml](mdc:blog-mds/_config.yml)包含：
+- 站点基本信息
+- 构建配置
+- 插件配置
+- 部署配置
+
+### 主题配置文件
+[themes/butterfly/_config.yml](mdc:blog-mds/themes/butterfly/_config.yml)包含：
+- 主题外观配置
+- 功能开关
+- 第三方服务配置
+
+### 环境变量
+```bash
+# .env文件（不提交到版本控制）
+HEXO_DEPLOY_TOKEN=your_deploy_token
+GOOGLE_ANALYTICS_ID=your_ga_id
+```
+
+## 依赖安全
+
+### 安全审计
+```bash
+# 检查安全漏洞
+pnpm audit
+
+# 修复安全漏洞
+pnpm audit --fix
+
+# 更新依赖
+pnpm update
+```
+
+### 依赖分析
+```bash
+# 分析依赖树
+pnpm list
+
+# 查看过时依赖
+pnpm outdated
+
+# 清理未使用依赖
+pnpm prune
+```
+
+## 构建优化
+
+### 构建配置
+```yaml
+# _config.yml中的构建优化
+# 压缩HTML
+minify:
+  html:
+    enable: true
+    exclude:
+      - '*.min.html'
+  css:
+    enable: true
+    exclude:
+      - '*.min.css'
+  js:
+    enable: true
+    mangle: true
+    output:
+    compress:
+    exclude:
+      - '*.min.js'
+```
+
+### 资源优化
+```yaml
+# 图片优化
+image_optimization:
+  enable: true
+  quality: 80
+  progressive: true
+
+# CSS优化
+css_optimization:
+  enable: true
+  minify: true
+  autoprefixer: true
+
+# JS优化
+js_optimization:
+  enable: true
+  minify: true
+  uglify: true
+```
+
+## 部署配置
+
+### GitHub Pages部署
+```yaml
+# _config.yml中的部署配置
+deploy:
+  type: git
+  repo: https://github.com/username/username.github.io.git
+  branch: main
+  message: "Site updated: {{ now('YYYY-MM-DD HH:mm:ss') }}"
+```
+
+### 其他平台部署
+```yaml
+# Vercel部署
+deploy:
+  type: vercel
+  token: ${{ secrets.VERCEL_TOKEN }}
+
+# Netlify部署
+deploy:
+  type: netlify
+  token: ${{ secrets.NETLIFY_TOKEN }}
+  site_id: your-site-id
+```
+
+## 监控和维护
+
+### 性能监控
+```yaml
+# 添加性能监控
+analytics:
+  google_analytics: your-ga-id
+  baidu_analytics: your-baidu-id
+  umami_analytics:
+    enable: true
+    serverURL: https://your-umami.com
+    website_id: your-website-id
+```
+
+### 错误监控
+```yaml
+# 错误监控配置
+error_monitoring:
+  enable: true
+  service: sentry
+  dsn: your-sentry-dsn
+```
+
+### 定期维护任务
+1. **依赖更新**：每月检查并更新依赖
+2. **安全审计**：定期运行安全审计
+3. **性能优化**：监控网站性能指标
+4. **内容备份**：定期备份文章和配置
+5. **SEO检查**：定期检查SEO指标

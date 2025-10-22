@@ -323,6 +323,88 @@ body {
   color: #ffffff !important;
 }
 
+/* 下拉菜单样式 */
+.menus_item_child {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menus_item:hover .menus_item_child {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.menus_item_child li {
+  margin: 0;
+  padding: 0;
+}
+
+.menus_item_child li a {
+  display: block;
+  padding: 10px 15px;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.menus_item_child li:last-child a {
+  border-bottom: none;
+}
+
+.menus_item_child li a:hover {
+  background: rgba(73, 177, 245, 0.1);
+  color: #49b1f5;
+}
+
+.menus_item_child li a i {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+}
+
+/* 下拉菜单箭头 */
+.menus_item .fa-chevron-down {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.menus_item:hover .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+/* 深色模式下的下拉菜单 */
+[data-theme="dark"] .menus_item_child {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .menus_item_child li a {
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .menus_item_child li a:hover {
+  background: rgba(73, 177, 245, 0.2);
+  color: #49b1f5;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
   body {
@@ -340,5 +422,21 @@ body {
   /* 移动端切换按钮样式调整 */
   #nav .nav-item[href*="javascript:void(0)"] {
     padding: 8px 12px;
+  }
+  
+  /* 移动端下拉菜单调整 */
+  .menus_item_child {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+  
+  .menus_item_child li a {
+    padding: 8px 20px;
+    border-bottom: none;
   }
 }

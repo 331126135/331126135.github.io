@@ -1,0 +1,151 @@
+---
+globs: *.md,*.yml,*.yaml
+description: Markdown和YAML文件编写规范
+---
+
+# Markdown和YAML文件编写规范
+
+## Markdown文章编写规范
+
+### Front-matter格式
+每篇博客文章必须包含完整的front-matter：
+
+```yaml
+---
+title: 文章标题
+date: 2025-01-01 12:00:00
+updated: 2025-01-01 12:00:00
+categories: 
+  - 前端
+  - React
+tags:
+  - React
+  - Hooks
+  - JavaScript
+description: 文章描述，用于SEO和摘要显示
+keywords: React,Hooks,前端开发
+top_img: 文章顶部图片URL
+cover: 文章封面图片URL
+comments: true
+toc: true
+toc_number: true
+toc_style_simple: false
+copyright: true
+copyright_author: 作者名
+copyright_author_href: 作者链接
+copyright_url: 文章链接
+copyright_info: 版权信息
+mathjax: false
+katex: false
+aplayer: false
+highlight_shrink: false
+aside: true
+---
+```
+
+### 文章结构规范
+1. **标题层级**：使用H1作为文章主标题，H2-H6作为章节标题
+2. **代码块**：使用语法高亮，指定语言类型
+3. **图片**：使用相对路径，添加alt描述
+4. **链接**：使用描述性文本，避免"点击这里"
+5. **列表**：使用有序或无序列表组织内容
+
+### 代码示例
+```markdown
+## 代码示例
+
+```javascript
+// 使用语法高亮
+function example() {
+    console.log('Hello World');
+}
+```
+
+### 图片使用
+```markdown
+![图片描述](/path/to/image.jpg)
+```
+
+## YAML配置文件规范
+
+### 缩进规则
+- 使用2个空格缩进
+- 保持层级结构清晰
+- 避免使用Tab键
+
+### 注释规范
+```yaml
+# 这是注释
+title: 网站标题
+# 多行注释
+# 第二行注释
+description: 网站描述
+```
+
+### 数组格式
+```yaml
+# 简单数组
+categories:
+  - 前端
+  - 后端
+  - 工具
+
+# 对象数组
+menu:
+  - name: 首页
+    url: /
+    icon: fas fa-home
+  - name: 关于
+    url: /about/
+    icon: fas fa-user
+```
+
+### 布尔值
+```yaml
+# 使用小写
+enable: true
+disable: false
+```
+
+### 字符串
+```yaml
+# 包含特殊字符时使用引号
+title: "包含:冒号的标题"
+description: '包含"引号"的描述'
+```
+
+## 文件命名规范
+
+### 文章文件
+- 使用kebab-case格式
+- 包含关键词便于SEO
+- 示例：`react-hooks-deep-dive.md`
+
+### 配置文件
+- 使用下划线分隔
+- 示例：`_config.yml`, `_config.landscape.yml`
+
+### 资源文件
+- 图片：使用描述性名称
+- CSS：使用功能命名
+- JS：使用驼峰命名
+
+## 内容质量要求
+
+### 文章内容
+1. **原创性**：确保内容原创，避免抄袭
+2. **准确性**：技术内容必须准确无误
+3. **完整性**：提供完整的代码示例和说明
+4. **可读性**：使用清晰的段落结构和过渡
+
+### SEO优化
+1. **标题优化**：包含关键词，长度适中
+2. **描述优化**：简洁明了，包含核心信息
+3. **标签优化**：使用相关标签，避免过度标签化
+4. **分类优化**：合理分类，便于用户浏览
+
+### 技术规范
+1. **代码质量**：提供完整可运行的代码
+2. **注释说明**：关键代码添加注释
+3. **错误处理**：包含错误处理示例
+4. **最佳实践**：遵循行业最佳实践
