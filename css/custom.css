@@ -1,0 +1,442 @@
+/* 自定义背景图片样式 */
+body {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 主页封面图片优化 */
+#page-header {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 首页顶部图片优化 */
+#page-header.full_page {
+  background-attachment: fixed;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* 添加半透明遮罩层，提高文字可读性 */
+#page-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+
+/* 确保文字在遮罩层之上 */
+#page-header .page-header-content {
+  position: relative;
+  z-index: 2;
+}
+
+/* 首页内容区域背景透明 */
+#content-inner {
+  background: transparent;
+}
+
+/* 文章卡片背景半透明 */
+.recent-post-item {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+}
+
+/* 导航栏样式优化 */
+#nav {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* 导航栏链接样式 - 强制覆盖所有可能的样式 */
+#nav .nav-item a,
+#nav .nav-item a:link,
+#nav .nav-item a:visited,
+#nav .nav-item a:active {
+  color: #2c3e50 !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+#nav .nav-item a:hover {
+  color: #49b1f5 !important;
+  transform: translateY(-2px);
+  text-shadow: none !important;
+  opacity: 1 !important;
+}
+
+/* 导航栏标题样式 */
+#nav .nav-title,
+#nav .nav-title a {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+  text-shadow: none !important;
+}
+
+/* 导航栏图标样式 */
+#nav .nav-item i {
+  color: #2c3e50 !important;
+  transition: all 0.3s ease !important;
+}
+
+#nav .nav-item:hover i {
+  color: #49b1f5 !important;
+}
+
+/* 移动端菜单按钮 */
+#nav .mobile-menu-btn {
+  color: #2c3e50 !important;
+}
+
+/* 移动端导航栏优化 */
+@media (max-width: 768px) {
+  #nav {
+    background: rgba(255, 255, 255, 0.98);
+  }
+  
+  #nav .nav-item a {
+    color: #2c3e50 !important;
+  }
+}
+
+/* 针对 Butterfly 主题的特殊样式覆盖 */
+.navbar .nav-item a {
+  color: #2c3e50 !important;
+}
+
+.navbar .nav-item a:hover {
+  color: #49b1f5 !important;
+}
+
+/* 确保导航栏文字在所有情况下都可见 */
+#nav * {
+  color: #2c3e50 !important;
+}
+
+#nav .nav-item:hover * {
+  color: #49b1f5 !important;
+}
+
+/* 更具体的 Butterfly 主题导航栏样式 */
+.navbar,
+.navbar .nav-item,
+.navbar .nav-item a,
+.navbar .nav-item span {
+  color: #2c3e50 !important;
+}
+
+.navbar .nav-item:hover,
+.navbar .nav-item:hover a,
+.navbar .nav-item:hover span {
+  color: #49b1f5 !important;
+}
+
+/* 导航栏品牌/标题 */
+.navbar-brand,
+.navbar-brand a {
+  color: #2c3e50 !important;
+  font-weight: 600 !important;
+}
+
+/* 导航栏切换按钮 */
+.navbar-toggler {
+  color: #2c3e50 !important;
+}
+
+/* 确保所有导航栏元素都有正确的颜色 */
+#nav .nav-item,
+#nav .nav-item a,
+#nav .nav-item span,
+#nav .nav-item i {
+  color: #2c3e50 !important;
+  text-decoration: none !important;
+}
+
+#nav .nav-item:hover,
+#nav .nav-item:hover a,
+#nav .nav-item:hover span,
+#nav .nav-item:hover i {
+  color: #49b1f5 !important;
+}
+
+/* 导航栏切换按钮样式 */
+#nav .nav-item[href*="javascript:void(0)"] {
+  cursor: pointer;
+  position: relative;
+}
+
+#nav .nav-item[href*="javascript:void(0)"]:hover {
+  background: rgba(73, 177, 245, 0.1);
+  border-radius: 4px;
+}
+
+/* 主题切换按钮特殊样式 */
+#nav .nav-item[href*="javascript:void(0)"][title*="主题"] {
+  transition: all 0.3s ease;
+}
+
+#nav .nav-item[href*="javascript:void(0)"][title*="主题"]:hover {
+  transform: scale(1.1);
+}
+
+/* 语言切换按钮特殊样式 */
+#nav .nav-item[href*="javascript:void(0)"][title*="语言"] {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+#nav .nav-item[href*="javascript:void(0)"][title*="语言"]:hover {
+  transform: scale(1.05);
+}
+
+/* 下拉菜单容器 */
+.language-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+}
+
+.language-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* 下拉菜单项 */
+.language-dropdown-item {
+  display: block;
+  padding: 10px 15px;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.language-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.language-dropdown-item:hover {
+  background: rgba(73, 177, 245, 0.1);
+  color: #49b1f5;
+}
+
+.language-dropdown-item.active {
+  background: rgba(73, 177, 245, 0.2);
+  color: #49b1f5;
+  font-weight: 600;
+}
+
+/* 语言图标 */
+.language-dropdown-item i {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+}
+
+/* 深色模式下的下拉菜单 */
+[data-theme="dark"] .language-dropdown {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .language-dropdown-item {
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .language-dropdown-item:hover {
+  background: rgba(73, 177, 245, 0.2);
+  color: #49b1f5;
+}
+
+[data-theme="dark"] .language-dropdown-item.active {
+  background: rgba(73, 177, 245, 0.3);
+  color: #49b1f5;
+}
+
+/* 切换按钮图标动画 */
+#nav .nav-item[href*="javascript:void(0)"] i {
+  transition: transform 0.3s ease;
+}
+
+#nav .nav-item[href*="javascript:void(0)"]:hover i {
+  transform: rotate(180deg);
+}
+
+/* 深色模式下的导航栏样式 */
+[data-theme="dark"] #nav {
+  background: rgba(0, 0, 0, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] #nav .nav-item a,
+[data-theme="dark"] #nav .nav-item a:link,
+[data-theme="dark"] #nav .nav-item a:visited,
+[data-theme="dark"] #nav .nav-item a:active {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] #nav .nav-item a:hover {
+  color: #49b1f5 !important;
+}
+
+[data-theme="dark"] #nav .nav-title,
+[data-theme="dark"] #nav .nav-title a {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] #nav .nav-item i {
+  color: #ffffff !important;
+}
+
+[data-theme="dark"] #nav .nav-item:hover i {
+  color: #49b1f5 !important;
+}
+
+[data-theme="dark"] #nav .mobile-menu-btn {
+  color: #ffffff !important;
+}
+
+/* 下拉菜单样式 */
+.menus_item_child {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  min-width: 150px;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.menus_item:hover .menus_item_child {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.menus_item_child li {
+  margin: 0;
+  padding: 0;
+}
+
+.menus_item_child li a {
+  display: block;
+  padding: 10px 15px;
+  color: #2c3e50;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.menus_item_child li:last-child a {
+  border-bottom: none;
+}
+
+.menus_item_child li a:hover {
+  background: rgba(73, 177, 245, 0.1);
+  color: #49b1f5;
+}
+
+.menus_item_child li a i {
+  margin-right: 8px;
+  width: 16px;
+  text-align: center;
+}
+
+/* 下拉菜单箭头 */
+.menus_item .fa-chevron-down {
+  margin-left: 5px;
+  transition: transform 0.3s ease;
+}
+
+.menus_item:hover .fa-chevron-down {
+  transform: rotate(180deg);
+}
+
+/* 深色模式下的下拉菜单 */
+[data-theme="dark"] .menus_item_child {
+  background: rgba(0, 0, 0, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .menus_item_child li a {
+  color: #ffffff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+[data-theme="dark"] .menus_item_child li a:hover {
+  background: rgba(73, 177, 245, 0.2);
+  color: #49b1f5;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+  
+  #page-header {
+    background-attachment: scroll;
+  }
+  
+  #page-header.full_page {
+    background-attachment: scroll;
+  }
+  
+  /* 移动端切换按钮样式调整 */
+  #nav .nav-item[href*="javascript:void(0)"] {
+    padding: 8px 12px;
+  }
+  
+  /* 移动端下拉菜单调整 */
+  .menus_item_child {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+  }
+  
+  .menus_item_child li a {
+    padding: 8px 20px;
+    border-bottom: none;
+  }
+}
