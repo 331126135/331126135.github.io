@@ -3,12 +3,11 @@ title: VSCode和Cursor PowerShell执行策略设置指南
 date: 2025-01-27 10:00:00
 updated: 2025-01-27 10:00:00
 categories: 
-  - 工具
+  - 开发环境
 tags:
   - VSCode
   - Cursor
   - PowerShell
-  - 执行策略
 description: 解决VSCode和Cursor编辑器中PowerShell执行策略受限的问题，提供简单有效的解决方案。
 keywords: VSCode,Cursor,PowerShell,执行策略
 comments: true

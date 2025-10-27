@@ -5,14 +5,11 @@ updated: 2025-01-27 14:00:00
 categories: 
   - 工具
 tags:
-  - Windows
   - 系统维护
-  - Geek Uninstaller
-  - Dism++
   - 软件卸载
   - 系统优化
 description: 推荐两款Windows系统维护必备工具：Geek Uninstaller用于彻底卸载软件清除残留，Dism++用于系统清理优化和更新管理
-keywords: Windows,系统维护,Geek Uninstaller,Dism++,软件卸载,系统优化,系统清理
+keywords: Windows,系统维护,Geek Uninstaller,Dism++,软件卸载,系统优化
 comments: true
 toc: true
 toc_number: true

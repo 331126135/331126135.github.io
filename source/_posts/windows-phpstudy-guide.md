@@ -5,16 +5,11 @@ updated: 2025-01-27 15:00:00
 categories: 
   - 工具
 tags:
-  - Windows
   - PHP
   - Web开发
-  - PhpStudy
   - 开发环境
-  - Apache
-  - Nginx
-  - MySQL
 description: PhpStudy一键搭建PHP开发环境，集成Apache/Nginx、MySQL、PHP等组件，适合Web开发和学习，图形化管理界面简单易用
-keywords: PhpStudy,PHP,Web开发,开发环境,Apache,Nginx,MySQL,集成环境
+keywords: PhpStudy,PHP,Web开发,开发环境,Apache,Nginx,MySQL
 comments: true
 toc: true
 toc_number: true

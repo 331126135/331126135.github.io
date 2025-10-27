@@ -3,14 +3,13 @@ title: Win11右键菜单切换Win10样式指南
 date: 2025-01-27 11:00:00
 updated: 2025-01-27 11:00:00
 categories: 
-  - 工具
+  - 系统优化
 tags:
   - Windows
   - Win11
   - 右键菜单
-  - 注册表
 description: 通过注册表命令快速切换Win11右键菜单样式，在Win10经典菜单和Win11新菜单之间自由切换。
-keywords: Windows,Win11,右键菜单,注册表,命令行
+keywords: Windows,Win11,右键菜单,注册表
 comments: true
 toc: true
 copyright: true

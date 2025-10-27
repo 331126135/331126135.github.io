@@ -5,13 +5,11 @@ updated: 2025-01-27 16:00:00
 categories: 
   - 工具
 tags:
-  - Windows
-  - Snipaste
   - 截图工具
   - 效率工具
   - 贴图
 description: Snipaste是一款简洁高效的截图贴图工具，支持截图标注、贴图到桌面、取色等功能，让截图更专业，贴图更便捷
-keywords: Snipaste,截图工具,贴图,Windows,效率工具,取色工具,标注工具
+keywords: Snipaste,截图工具,贴图,Windows,效率工具,取色工具
 comments: true
 toc: true
 toc_number: true
